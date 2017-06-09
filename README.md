@@ -1,6 +1,6 @@
 # Chat Attack! (Client)
 
-This is the client portion of the Chat Attack! web app, built on ReactJS, and websockets. Get the server [here](https://github.com/dkoloditch/chat-attack-server).
+This is the client portion of the Chat Attack! web app, built on ReactJS and websockets. Get the server [here](https://github.com/dkoloditch/chat-attack-server).
 
 ### Fire it up!
 1. Clone this repo
