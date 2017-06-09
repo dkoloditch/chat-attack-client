@@ -10,3 +10,6 @@ This is the client portion of the Chat Attack! web app, built on ReactJS and web
 5. In a second terminal (same directory), run: `npm run webpack-dev-server`
 6. Open your browser and go to `localhost:3001`
 7. Chat Attack!
+
+### Fun Commands
+- `color`
