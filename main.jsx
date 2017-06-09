@@ -27,13 +27,13 @@ class Main extends React.Component {
 
     this.ws.onmessage = (m) => {
       const data = JSON.parse(m.data);
-      console.log(data);
+
       if (data.payload && data.payload.timestamp) {
         // sort messages by latest timestamp first
         const sortedData = ([data.payload].concat(this.state.data)).sort((a,b) => {
           return a.timestamp - b.timestamp
         });
-        // console.log('here');
+
         // set state when new data is received
         this.setState({
           data: sortedData
@@ -117,6 +117,8 @@ class Main extends React.Component {
                   <div className="content">
                     <input
                       ref="input"
+                      className="input"
+                      autoFocus
                       onKeyPress={(e) => {this._handleKeyPress(e)}} />
                   </div>
                 </article>
