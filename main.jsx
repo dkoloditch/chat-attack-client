@@ -97,9 +97,12 @@ class Main extends React.Component {
   render() {
     return (
       <div className="columns">
+        <div className="column is-2">
+        </div>
+
         <div className="column">
           <div className="tile is-ancestor">
-            <div className="tile is-vertical is-8">
+            <div className="tile is-vertical">
               <div className="tile is-parent">
                 <article className="tile is-child box">
                   <p className="title">Chat Attack!</p>
@@ -125,6 +128,9 @@ class Main extends React.Component {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="column is-2">
         </div>
       </div>
     )
