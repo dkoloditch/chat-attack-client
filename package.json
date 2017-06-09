@@ -25,6 +25,7 @@
     "babel-preset-react": "^6.24.1",
     "bulma": "^0.4.2",
     "css-loader": "^0.28.4",
+    "moment": "^2.18.1",
     "node-sass": "^4.5.3",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",

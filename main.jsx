@@ -1,4 +1,5 @@
 import React from 'react';
+import moment from 'moment';
 
 class Main extends React.Component {
   constructor(props) {
@@ -12,6 +13,11 @@ class Main extends React.Component {
     this._initializeSocket();
   }
 
+  componentDidUpdate() {
+    const obj = document.getElementById('chat-display');
+    obj.scrollTop = obj.scrollHeight;
+  }
+
   _initializeSocket() {
     this.ws = new WebSocket('ws://localhost:3000/socket/websocket');
 
@@ -21,11 +27,18 @@ class Main extends React.Component {
 
     this.ws.onmessage = (m) => {
       const data = JSON.parse(m.data);
-
-      // set state when new data is received
-      this.setState({
-        data: [data.payload].concat(this.state.data)
-      });
+      console.log(data);
+      if (data.payload && data.payload.timestamp) {
+        // sort messages by latest timestamp first
+        const sortedData = ([data.payload].concat(this.state.data)).sort((a,b) => {
+          return a.timestamp - b.timestamp
+        });
+        // console.log('here');
+        // set state when new data is received
+        this.setState({
+          data: sortedData
+        });
+      }
     };
 
     this.ws.onerror = (e) => {
@@ -49,17 +62,19 @@ class Main extends React.Component {
 
   _handleKeyPress(e) {
     if (e.key == "Enter") {
-      // send websocket data
+      // construct websocket data
       const payload = JSON.stringify({
         "userId": this.state.userId,
-        "body": e.target.value
+        "body": e.target.value,
+        "timestamp": moment().valueOf()
       });
 
+      // send websocket data
       this.ws.send(JSON.stringify({
         "topic": "room:main",
         "event": "new_message",
         "payload": payload,
-        "ref": "some ref"
+        "ref": "reference"
       }));
 
       // reset input field
@@ -81,13 +96,34 @@ class Main extends React.Component {
 
   render() {
     return (
-      <div>
-        <h1>Chat Attack!</h1>
-        <input
-          ref="input"
-          onKeyPress={(e) => {this._handleKeyPress(e)}} />
-
-        {this._renderData()}
+      <div className="columns">
+        <div className="column">
+          <div className="tile is-ancestor">
+            <div className="tile is-vertical is-8">
+              <div className="tile is-parent">
+                <article className="tile is-child box">
+                  <p className="title">Chat Attack!</p>
+                </article>
+              </div>
+              <div className="tile is-parent chat-display" id="chat-display">
+                <article className="tile is-child box">
+                  <div className="content">
+                    {this._renderData()}
+                  </div>
+                </article>
+              </div>
+              <div className="tile is-parent">
+                <article className="tile is-child box">
+                  <div className="content">
+                    <input
+                      ref="input"
+                      onKeyPress={(e) => {this._handleKeyPress(e)}} />
+                  </div>
+                </article>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     )
   }
