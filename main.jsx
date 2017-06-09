@@ -5,6 +5,7 @@ class Main extends React.Component {
     super(props);
 
     this.state = {
+      userId: `user${Math.floor(Math.random() * 1000000)}`,
       data: []
     }
 
@@ -16,17 +17,17 @@ class Main extends React.Component {
 
     this.ws.onmessage = (m) => {
       const data = JSON.parse(m.data);
-
+      
       // set state when new data is received
       this.setState({
-        data: [data.payload.body].concat(this.state.data)
+        data: [data.payload].concat(this.state.data)
       });
     };
 
     this.ws.onerror = (e) => {
       console.log("error:", e);
     };
-    
+
     this.ws.onclose = this.logout;
   }
 
@@ -34,7 +35,10 @@ class Main extends React.Component {
     this.ws.send(JSON.stringify({
       "topic": "room:main",
       "event": "phx_join",
-      "payload": JSON.stringify({"body": null}),
+      "payload": JSON.stringify({
+        "userId": this.state.userId,
+        "body": null
+      }),
       "ref": "some ref"
     }));
   }
@@ -42,7 +46,11 @@ class Main extends React.Component {
   _handleKeyPress(e) {
     if (e.key == "Enter") {
       // send websocket data
-      const payload = JSON.stringify({"body": e.target.value});
+      const payload = JSON.stringify({
+        "userId": this.state.userId,
+        "body": e.target.value
+      });
+
       this.ws.send(JSON.stringify({
         "topic": "room:main",
         "event": "new_message",
@@ -57,11 +65,15 @@ class Main extends React.Component {
 
   _renderData() {
     if (this.state.data) {
-      return this.state.data.map((d) => {
+      return this.state.data.map((message) => {
         return(
-          <div key={Math.random()}>
-            {d}
-          </div>
+          <p key={Math.random()}>
+            {
+              message.userId && message.body
+                ? `${message.userId}: ${message.body}`
+                : null
+            }
+          </p>
         )
       })
     }
