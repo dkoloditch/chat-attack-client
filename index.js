@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Router, Route, hashHistory } from "react-router";
 import Main from './main.jsx';
+import 'bulma';
 
 ReactDOM.render(
   <Router history={hashHistory}>
