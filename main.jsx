@@ -80,7 +80,7 @@ class Main extends React.Component {
 
   _turnColorOn() {
     colorflow = new ColorFlow({
-        element: ['body'],
+        element: ['.colorflow-item'],
         background: ['#85144b', '#F012BE', '#FFBC00', '#7FDBFF', '#01FF70'],
         text: ['#CF5D94', '#EFA9FA', '#665800', '#004966', '#00662C'],
         time: 25
@@ -165,7 +165,7 @@ class Main extends React.Component {
                 </article>
               </div>
               <div className="tile is-parent chat-display" id="chat-display">
-                <article className="tile is-child box">
+                <article className="tile is-child box colorflow-item">
                   <div className="content">
                     {this._renderData()}
                   </div>
