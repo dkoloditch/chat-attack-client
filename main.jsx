@@ -70,7 +70,7 @@ class Main extends React.Component {
   }
 
   _handleColorSwitch(value) {
-    if (value === true) {
+    if (value === "ON") {
       this._turnColorOn();
     }
     else {
@@ -100,7 +100,7 @@ class Main extends React.Component {
         this.ws.send(JSON.stringify({
           "topic": "room:main",
           "event": "color_switch",
-          "payload": JSON.stringify({"color_switch": true}),
+          "payload": JSON.stringify({"color_switch": "ON"}),
           "ref": "reference"
         }));
 
@@ -111,11 +111,9 @@ class Main extends React.Component {
         this.ws.send(JSON.stringify({
           "topic": "room:main",
           "event": "color_switch",
-          "payload": JSON.stringify({"color_switch": false}),
+          "payload": JSON.stringify({"color_switch": "OFF"}),
           "ref": "reference"
         }));
-
-        this._clearInputField();
 
         this._clearInputField();
       }
