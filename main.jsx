@@ -9,15 +9,19 @@ class Main extends React.Component {
       data: []
     }
 
+    this._initializeSocket();
+  }
+
+  _initializeSocket() {
     this.ws = new WebSocket('ws://localhost:3000/socket/websocket');
 
     this.ws.onopen = (arg) => {
-      this._initializeSocket();
+      this._joinSocket();
     };
 
     this.ws.onmessage = (m) => {
       const data = JSON.parse(m.data);
-      
+
       // set state when new data is received
       this.setState({
         data: [data.payload].concat(this.state.data)
@@ -31,7 +35,7 @@ class Main extends React.Component {
     this.ws.onclose = this.logout;
   }
 
-  _initializeSocket() {
+  _joinSocket() {
     this.ws.send(JSON.stringify({
       "topic": "room:main",
       "event": "phx_join",
@@ -66,13 +70,9 @@ class Main extends React.Component {
   _renderData() {
     if (this.state.data) {
       return this.state.data.map((message) => {
-        return(
+        if (message.userId && message.body) return (
           <p key={Math.random()}>
-            {
-              message.userId && message.body
-                ? `${message.userId}: ${message.body}`
-                : null
-            }
+            <strong>{message.userId}</strong>: {message.body}
           </p>
         )
       })
@@ -82,9 +82,7 @@ class Main extends React.Component {
   render() {
     return (
       <div>
-        <label>Chat It Up!</label>
-        <br/>
-        <br/>
+        <h1>Chat Attack!</h1>
         <input
           ref="input"
           onKeyPress={(e) => {this._handleKeyPress(e)}} />
