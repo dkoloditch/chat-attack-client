@@ -1,5 +1,7 @@
 import React from 'react';
 import moment from 'moment';
+import ColorFlow from 'colorflow';
+var colorflow;
 
 class Main extends React.Component {
   constructor(props) {
@@ -39,6 +41,9 @@ class Main extends React.Component {
           data: sortedData
         });
       }
+      else if (data.payload.color_switch) {
+        this._handleColorSwitch(data.payload.color_switch);
+      }
     };
 
     this.ws.onerror = (e) => {
@@ -56,29 +61,82 @@ class Main extends React.Component {
         "userId": this.state.userId,
         "body": null
       }),
-      "ref": "some ref"
+      "ref": "reference"
     }));
+  }
+
+  _clearInputField() {
+    this.refs.input.value = "";
+  }
+
+  _handleColorSwitch(value) {
+    if (value === true) {
+      this._turnColorOn();
+    }
+    else {
+      this._turnColorOff();
+    }
+  }
+
+  _turnColorOn() {
+    colorflow = new ColorFlow({
+        element: ['body'],
+        background: ['#85144b', '#F012BE', '#FFBC00', '#7FDBFF', '#01FF70'],
+        text: ['#CF5D94', '#EFA9FA', '#665800', '#004966', '#00662C'],
+        time: 25
+    });
+  }
+
+  _turnColorOff() {
+    colorflow.disable();
   }
 
   _handleKeyPress(e) {
     if (e.key == "Enter") {
-      // construct websocket data
-      const payload = JSON.stringify({
-        "userId": this.state.userId,
-        "body": e.target.value,
-        "timestamp": moment().valueOf()
-      });
+      const message = e.target.value;
 
-      // send websocket data
-      this.ws.send(JSON.stringify({
-        "topic": "room:main",
-        "event": "new_message",
-        "payload": payload,
-        "ref": "reference"
-      }));
+      if (message.trim() === "color") {
+        // send websocket data
+        this.ws.send(JSON.stringify({
+          "topic": "room:main",
+          "event": "color_switch",
+          "payload": JSON.stringify({"color_switch": true}),
+          "ref": "reference"
+        }));
 
-      // reset input field
-      this.refs.input.value = "";
+        this._clearInputField();
+      }
+      else if (message.trim()==="stop color" || message.trim()==="color stop") {
+        // send websocket data
+        this.ws.send(JSON.stringify({
+          "topic": "room:main",
+          "event": "color_switch",
+          "payload": JSON.stringify({"color_switch": false}),
+          "ref": "reference"
+        }));
+
+        this._clearInputField();
+
+        this._clearInputField();
+      }
+      else {
+        // construct websocket data
+        const payload = JSON.stringify({
+          "userId": this.state.userId,
+          "body": message,
+          "timestamp": moment().valueOf()
+        });
+
+        // send websocket data
+        this.ws.send(JSON.stringify({
+          "topic": "room:main",
+          "event": "new_message",
+          "payload": payload,
+          "ref": "reference"
+        }));
+
+        this._clearInputField();
+      }
     }
   }
 
