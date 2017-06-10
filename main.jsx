@@ -161,7 +161,9 @@ class Main extends React.Component {
             <div className="tile is-vertical">
               <div className="tile is-parent">
                 <article className="tile is-child box">
-                  <p className="title">Chat Attack!</p>
+                  <p className="title">
+                    <strong>Chat Attack!</strong>
+                  </p>
                 </article>
               </div>
 
