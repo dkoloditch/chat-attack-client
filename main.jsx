@@ -164,13 +164,15 @@ class Main extends React.Component {
                   <p className="title">Chat Attack!</p>
                 </article>
               </div>
-              <div className="tile is-parent chat-display" id="chat-display">
-                <article className="tile is-child box colorflow-item">
+
+              <div className="tile is-parent" id="chat-display">
+                <article className="tile is-child box chat-display colorflow-item">
                   <div className="content">
                     {this._renderData()}
                   </div>
                 </article>
               </div>
+
               <div className="tile is-parent">
                 <article className="tile is-child box">
                   <div className="content">
