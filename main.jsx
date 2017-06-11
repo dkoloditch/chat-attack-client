@@ -97,7 +97,9 @@ class Main extends React.Component {
   }
 
   _turnColorOff() {
-    colorflow.disable();
+    if (colorflow) {
+      colorflow.disable();
+    }
   }
 
   _handleKeyPress(e) {
