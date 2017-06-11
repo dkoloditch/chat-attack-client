@@ -30,7 +30,13 @@ class Main extends React.Component {
     this.ws.onmessage = (m) => {
       const data = JSON.parse(m.data);
 
-      if (data.payload && data.payload.timestamp) {
+      if (data.payload.response && data.payload.response.messages) {
+        const messages = data.payload.response.messages.map((m) => {
+          return JSON.parse(m);
+        });
+        this.setState({data: messages});
+      }
+      else if (data.payload && data.payload.timestamp) {
         // sort messages by latest timestamp first
         const sortedData = ([data.payload].concat(this.state.data)).sort((a,b) => {
           return a.timestamp - b.timestamp
