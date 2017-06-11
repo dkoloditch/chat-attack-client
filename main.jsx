@@ -34,7 +34,10 @@ class Main extends React.Component {
         const messages = data.payload.response.messages.map((m) => {
           return JSON.parse(m);
         });
-        this.setState({data: messages});
+        const sortedData = messages.sort((a,b) => {
+          return a.timestamp - b.timestamp
+        });
+        this.setState({data: sortedData});
       }
       else if (data.payload && data.payload.timestamp) {
         // sort messages by latest timestamp first
