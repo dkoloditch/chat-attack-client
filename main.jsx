@@ -16,8 +16,7 @@ class Main extends React.Component {
   }
 
   componentDidUpdate() {
-    const obj = document.getElementById('chat-display');
-    obj.scrollTop = obj.scrollHeight;
+    this._scrollToMostRecentChat()
   }
 
   _initializeSocket() {
@@ -74,6 +73,11 @@ class Main extends React.Component {
     }));
   }
 
+  _scrollToMostRecentChat() {
+    const obj = document.getElementById('chat-display');
+    obj.scrollTop = obj.scrollHeight;
+  }
+
   _clearInputField() {
     this.refs.input.value = "";
   }
@@ -89,10 +93,10 @@ class Main extends React.Component {
 
   _turnColorOn() {
     colorflow = new ColorFlow({
-        element: ['.colorflow-item'],
-        background: ['#85144b', '#F012BE', '#FFBC00', '#7FDBFF', '#01FF70'],
-        text: ['#CF5D94', '#EFA9FA', '#665800', '#004966', '#00662C'],
-        time: 25
+      element: ['.colorflow-item'],
+      background: ['#85144b', '#F012BE', '#FFBC00', '#7FDBFF', '#01FF70'],
+      text: ['#CF5D94', '#EFA9FA', '#665800', '#004966', '#00662C'],
+      time: 25
     });
   }
 
@@ -164,8 +168,7 @@ class Main extends React.Component {
   render() {
     return (
       <div className="columns">
-        <div className="column is-2">
-        </div>
+        <div className="column is-2" />
 
         <div className="column">
           <div className="tile is-ancestor">
@@ -178,8 +181,10 @@ class Main extends React.Component {
                 </article>
               </div>
 
-              <div className="tile is-parent" id="chat-display">
-                <article className="tile is-child box chat-display colorflow-item">
+              <div className="tile is-parent">
+                <article
+                  id="chat-display"
+                  className="tile is-child box chat-display colorflow-item">
                   <div className="content">
                     {this._renderData()}
                   </div>
@@ -201,8 +206,7 @@ class Main extends React.Component {
           </div>
         </div>
 
-        <div className="column is-2">
-        </div>
+        <div className="column is-2" />
       </div>
     )
   }
